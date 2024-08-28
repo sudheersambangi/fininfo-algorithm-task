@@ -1,0 +1,59 @@
+package com.practice.algorithmtask.ui
+
+import android.os.Bundle
+import android.view.View
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.GridLayoutManager
+import com.practice.algorithmtask.adapters.NumberAdapter
+import com.practice.algorithmtask.databinding.ActivityMainBinding
+import com.practice.algorithmtask.viewModel.NumberViewModel
+
+class MainActivity : AppCompatActivity() {
+
+    private lateinit var binding: ActivityMainBinding
+    private lateinit var numberAdapter: NumberAdapter
+    private val numberViewModel: NumberViewModel by viewModels()
+    private val list: List<Int> = (1..100).toList()
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        numberAdapter = NumberAdapter(emptyList())
+
+        binding.numberRecyclerView.layoutManager = GridLayoutManager(this, 5)
+        binding.numberRecyclerView.adapter = numberAdapter
+
+        val rulesList = listOf("Odd Numbers", "Even Numbers", "Prime Numbers", "Fibonacci Numbers")
+        val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, rulesList)
+
+        binding.rulesSpinner.adapter = adapter
+
+        binding.rulesSpinner.onItemSelectedListener =
+            object : AdapterView.OnItemSelectedListener {
+                override fun onNothingSelected(parent: AdapterView<*>?) {
+
+                }
+
+                override fun onItemSelected(
+                    parent: AdapterView<*>?,
+                    view: View?,
+                    position: Int,
+                    id: Long
+                ) {
+                    numberViewModel.applyRule(rulesList[position])
+                }
+            }
+
+        numberViewModel.liveDataNumber.observe(this, Observer { numberList ->
+            numberAdapter.updateNumbers(numberList)
+        })
+    }
+}
