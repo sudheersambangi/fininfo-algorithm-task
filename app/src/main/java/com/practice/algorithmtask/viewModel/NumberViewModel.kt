@@ -5,6 +5,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.practice.algorithmtask.data.NumberItem
+import com.practice.algorithmtask.utils.Constants.Companion.RULE_EVEN_NUMBERS
+import com.practice.algorithmtask.utils.Constants.Companion.RULE_FIBONACCI_SEQUENCE
+import com.practice.algorithmtask.utils.Constants.Companion.RULE_ODD_NUMBERS
+import com.practice.algorithmtask.utils.Constants.Companion.RULE_PRIME_NUMBERS
 
 class NumberViewModel : ViewModel() {
 
@@ -24,10 +28,10 @@ class NumberViewModel : ViewModel() {
     fun applyRule(rule: String) {
         numbersList.forEach { it.isHighlighted = false }
         when (rule) {
-            "Odd Numbers" -> highlightOddNumbers()
-            "Even Numbers" -> highlightEvenNumbers()
-            "Prime Numbers" -> highlightPrimeNumbers()
-            "Fibonacci Numbers" -> highlightFibonacciNumber()
+            RULE_ODD_NUMBERS -> highlightOddNumbers()
+            RULE_EVEN_NUMBERS -> highlightEvenNumbers()
+            RULE_PRIME_NUMBERS -> highlightPrimeNumbers()
+            RULE_FIBONACCI_SEQUENCE -> highlightFibonacciNumber()
         }
         _numberData.value = numbersList
     }
@@ -47,7 +51,8 @@ class NumberViewModel : ViewModel() {
     }
 
     private fun highlightFibonacciNumber(){
-
+        val fibonacciList = generateFibonacciSeries(100)
+        numbersList.forEach { if (fibonacciList.contains(it.number)) it.isHighlighted = true }
     }
 
     private fun isPrime(number: Int) : Boolean {
@@ -59,5 +64,18 @@ class NumberViewModel : ViewModel() {
         }
         return true
     }
+
+    private fun generateFibonacciSeries(number: Int): List<Int> {
+        if (number <= 0) return emptyList()
+
+        val fibonacciList = mutableListOf(0, 1)
+        while (fibonacciList.size < number) {
+            val nextValue = fibonacciList[fibonacciList.size - 1] + fibonacciList[fibonacciList.size - 2]
+            fibonacciList.add(nextValue)
+        }
+        return fibonacciList
+    }
+
+
 }
 

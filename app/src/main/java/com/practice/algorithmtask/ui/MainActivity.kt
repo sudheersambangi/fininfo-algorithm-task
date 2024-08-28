@@ -4,13 +4,19 @@ import android.os.Bundle
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
+import com.practice.algorithmtask.R
 import com.practice.algorithmtask.adapters.NumberAdapter
 import com.practice.algorithmtask.databinding.ActivityMainBinding
+import com.practice.algorithmtask.utils.Constants.Companion.RULE_EVEN_NUMBERS
+import com.practice.algorithmtask.utils.Constants.Companion.RULE_FIBONACCI_SEQUENCE
+import com.practice.algorithmtask.utils.Constants.Companion.RULE_ODD_NUMBERS
+import com.practice.algorithmtask.utils.Constants.Companion.RULE_PRIME_NUMBERS
 import com.practice.algorithmtask.viewModel.NumberViewModel
 
 class MainActivity : AppCompatActivity() {
@@ -31,8 +37,8 @@ class MainActivity : AppCompatActivity() {
         binding.numberRecyclerView.layoutManager = GridLayoutManager(this, 5)
         binding.numberRecyclerView.adapter = numberAdapter
 
-        val rulesList = listOf("Odd Numbers", "Even Numbers", "Prime Numbers", "Fibonacci Numbers")
-        val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, rulesList)
+        val rulesList = listOf(RULE_ODD_NUMBERS, RULE_EVEN_NUMBERS, RULE_PRIME_NUMBERS, RULE_FIBONACCI_SEQUENCE)
+        val adapter = ArrayAdapter(this, R.layout.spinner_drop_down, rulesList)
 
         binding.rulesSpinner.adapter = adapter
 
@@ -49,6 +55,7 @@ class MainActivity : AppCompatActivity() {
                     id: Long
                 ) {
                     numberViewModel.applyRule(rulesList[position])
+                    Toast.makeText(this@MainActivity, rulesList[position], Toast.LENGTH_SHORT).show()
                 }
             }
 

@@ -28,7 +28,8 @@ class NumberAdapter(private var numberList : List<NumberItem>) :
     override fun onBindViewHolder(holder: NumberViewHolder, position: Int) {
         val number = numberList[position]
         holder.binding.numberItem.text = number.number.toString()
-        holder.binding.numberItem.setBackgroundColor(if(number.isHighlighted) Color.GREEN else Color.WHITE )
+        holder.binding.numberItem.setBackgroundColor(if(number.isHighlighted) Color.GRAY else Color.WHITE )
+        holder.binding.numberItem.setTextColor(if (number.isHighlighted) Color.WHITE else Color.BLACK)
     }
 
     fun updateNumbers(newNumbers : List<NumberItem>){

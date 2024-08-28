@@ -23,6 +23,7 @@
             android:layout_height="wrap_content"
             android:paddingVertical="8dp"
             android:text="Algorithm Task"
+            android:textColor="@color/black"
             android:textAlignment="center"
             android:textSize="24sp" />
     </com.google.android.material.appbar.AppBarLayout>
